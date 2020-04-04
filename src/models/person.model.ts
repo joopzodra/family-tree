@@ -1,0 +1,22 @@
+export interface Person {
+  id: number;
+  firstNames: string;
+  shortName: string;
+  surname: string;
+  dateOfBirth: string;
+  placeOfBirth: string;
+  dateOfDeath: string;
+  placeOfDeath: string;
+  fatherId: number | null;
+  motherId: number | null ;
+  marriedWith: number[];
+  datesOfMarriages: string[];
+  placesOfMarriages: string[];
+  datesOfDivorces: string[];
+  partnerWith: number[];
+  partnerShipsStartYears: string[];
+  partnerShipsEndYears: string[];
+  father?: Person;
+  mother?: Person;
+  children?: Person[];
+}
