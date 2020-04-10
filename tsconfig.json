@@ -27,6 +27,6 @@
       }
     ],
   },
-  "include": ["node_modules/@open-wc/**/*.js", "src/family-tree.ts", "rollup.config.js"],
+  "include": ["node_modules/@open-wc/**/*.js", "src/**/*.ts", "rollup.config.js"],
   "exclude": ["node_modules/!(@open-wc)"]
 }

@@ -17,6 +17,7 @@
     "@open-wc/building-rollup": "^0.21.0",
     "@open-wc/eslint-config": "^2.0.0",
     "@open-wc/prettier-config": "^0.1.10",
+    "@types/page": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "es-dev-server": "^1.5.0",
@@ -53,7 +54,8 @@
   "author": "jr-ft",
   "license": "MIT",
   "dependencies": {
+    "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",
-    "lit-element": "^2.0.1"
+    "page": "^1.11.5"
   }
 }

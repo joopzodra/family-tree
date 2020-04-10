@@ -16,7 +16,4 @@ export interface Person {
   partnerWith: number[];
   partnerShipsStartYears: string[];
   partnerShipsEndYears: string[];
-  father?: Person;
-  mother?: Person;
-  children?: Person[];
 }
