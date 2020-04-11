@@ -3,7 +3,7 @@ import page from 'page';
 
 export class JrFamilyTree extends LitElement {
 
-  @property() mainId: Number = 32
+  @property({type: Number}) mainId = 32
 
   render(): TemplateResult {
     return html`
@@ -25,7 +25,6 @@ export class JrFamilyTree extends LitElement {
   onNavigate(context: PageJS.Context): void {
     const id = (context.params as {id: string}).id
     document.title = 'FT ' + id
-    console.log('hi', context)
     this.mainId = +id
   }
 }

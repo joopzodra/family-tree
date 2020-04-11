@@ -1,32 +1,28 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "baseUrl": "./",
-    "downlevelIteration": true,
-    "outDir": "./out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",    
-    "esModuleInterop": true,
+      "lib": [
+        "es2018",
+        "dom"
+      ],
     "allowJs": true,
-    "checkJs": false,
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "outDir": "./out-tsc",
     "plugins": [
       {
         "name": "typescript-lit-html-plugin"
       }
     ],
+    "sourceMap": true
   },
   "include": ["node_modules/@open-wc/**/*.js", "src/**/*.ts", "rollup.config.js"],
-  "exclude": ["node_modules/!(@open-wc)"]
+  "exclude": ["node_modules/!(@open-wc)"]  
 }

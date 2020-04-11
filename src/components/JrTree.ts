@@ -4,11 +4,10 @@ import { Person } from '../models/person.model'
 const connectWidth = 6
 // const connectColor = css`rgba(0,0,0, 0.4)`
 const connectColor = css`rgba(0,0,0, 0.4)`
-const personWidth = 100
 
 export class JrTree extends LitElement {
-  @property() data: Array = []
-  @property() mainId: Number = 32
+  @property( {type: Array}) data = []
+  @property({type: Number}) mainId = 32
 
   static get styles(): CSSResult {
     return css`
@@ -62,14 +61,6 @@ export class JrTree extends LitElement {
         margin: 0 50% 0 ${connectWidth / 2}px;
         padding-right: ${connectWidth / 2}px;
         width: 50%;
-      }
-      .person {
-        display: flex;
-        flex-flow: column;
-        width: ${personWidth}px;
-        height: 100px;
-        border: solid ${connectColor} 2px;
-        margin: 0 16px;
       }      
     `;
   }
@@ -81,21 +72,13 @@ export class JrTree extends LitElement {
     return html`
       <div class="tree-container">
         <div class="tree">
-          <div class="ancestors-container">${JrTree.ancestors(data, person)}</div>
+        <div class="ancestors-container">${JrTree.ancestors(data, person)}</div>
           ${person.fatherId || person.motherId ? ancestorsVerticalConnect : html``}
-          <div class="person main">${person.firstNames} ${person.surname} ${person.dateOfBirth}</div>
+          <jr-main-person .person="${person}"></jr-main-person>
           ${hasProgeny ? html`<div class="progeny vertical connect"></div>` : html``}
           <div class="progeny-container">${JrTree.progenyTemplate(data, person, id, '')}</div>
         </div>
       </div>
-    `
-  }
-
-  static personTemplate(person: Person): TemplateResult {
-    return html`
-      <a href=${person.id} class="person" @click=${(event: Event): void => JrTree.navigate(person.id, event.srcElement)}>
-        <div>${person.firstNames} ${person.surname}</div><div>${person.dateOfBirth}</div>
-      </a>
     `
   }
 
@@ -124,7 +107,7 @@ export class JrTree extends LitElement {
       <div class="ancestors">
         <div class="ancestors-container">${ancestorTemplateResult}</div>
         ${ancestorVerticalConnectTop}
-        ${JrTree.personTemplate(person)}
+        <jr-person .person=${person}></jr-person>
         <div class="connect vertical"></div>
         <div class="connect horizontal ${leftOrRight}"></div>
       </div>
@@ -144,7 +127,7 @@ export class JrTree extends LitElement {
         <div class="progeny">
           <div class="connect horizontal ${position}"></div>
           <div class="vertical connect"></div>
-          ${JrTree.personTemplate(person)}
+          <jr-person .person=${person}></jr-person>
           ${progenyTemplateResult.length ? html`<div class="progeny vertical connect"></div>` : html``}
           <div class="progeny-container">${progenyTemplateResult}</div>
         </div>
@@ -152,16 +135,6 @@ export class JrTree extends LitElement {
     return progeny
   }
 
-  static navigate(id: number, src: EventTarget | null): void {
-    const event = new CustomEvent('navigate', {
-      bubbles: true,
-      composed: true,
-      detail: id.toString()
-    });
-    if (src) {
-      src.dispatchEvent(event);   
-    }
-  }
 
   constructor() {
     super()
@@ -176,8 +149,8 @@ export class JrTree extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <h1>My app</h1>
-      ${JrTree.mainPersonTemplate(this.data, this.mainId as number)}
+      <h1>Stamboom</h1>
+      ${JrTree.mainPersonTemplate(this.data, this.mainId)}
     `;
   }
 }
