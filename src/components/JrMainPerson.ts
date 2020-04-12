@@ -1,9 +1,6 @@
 import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-element'
 import { Person } from '../models/person.model'
 
-const connectColor = css`rgba(0,0,0, 0.4)`
-const personWidth = 100
-
 export class JrMainPerson extends LitElement {
   @property({ type: Object }) person: Person | {} = {}
 
@@ -12,11 +9,13 @@ export class JrMainPerson extends LitElement {
       .person.main {
         display: flex;
         flex-flow: column;
-        width: ${personWidth}px;
-        height: 150px;
-        width: 150px;
-        border: solid ${connectColor} 8px;
-        margin: 0 16px;
+        height: 125px;
+        width: 125px;
+        border-style: var(--person-border-style);
+        border-color: var(--person-border-color);
+        border-width: var(--three-quarter-space);
+        margin-left: var(--one-space);
+        margin-right: var(--one-space);
       }  
     `
   }

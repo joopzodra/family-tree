@@ -1,9 +1,6 @@
 import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-element'
 import { Person } from '../models/person.model'
 
-const connectColor = css`rgba(0,0,0, 0.4)`
-const personWidth = 100
-
 export class JrPerson extends LitElement {
   @property({ type: Object }) person: Person | {} = {}
 
@@ -12,11 +9,13 @@ export class JrPerson extends LitElement {
       .person {
         display: flex;
         flex-flow: column;
-        width: ${personWidth}px;
-        height: 150px;
-        width: 150px;
-        border: solid ${connectColor} 8px;
-        margin: 0 16px;
+        height: 100px;
+        width: 100px;
+        border-style: var(--person-border-style);
+        border-width: var(--person-border-width);
+        border-color: var(--person-border-color);
+        margin-left: var(--one-space);
+        margin-right: var(--one-space);
       }  
     `
   }
@@ -30,21 +29,10 @@ export class JrPerson extends LitElement {
     return (person as Person).id !== undefined
   }
 
-  static navigate(id: number, src: EventTarget | null): void {
-    const event = new CustomEvent('navigate', {
-      bubbles: true,
-      composed: true,
-      detail: id.toString()
-    });
-    if (src) {
-      src.dispatchEvent(event);   
-    }
-  }
-
   render(): TemplateResult {
     if (JrPerson.isPerson(this.person)) {
       return html`
-      <a href=${this.person.id} class="person" @click=${(event: Event): void => JrPerson.navigate((this.person as Person).id, event.srcElement)}>
+      <a href=${this.person.id} class="person">
         <div>${this.person.firstNames} ${this.person.surname}</div><div>${this.person.dateOfBirth}</div>
       </a>`
     } else {

@@ -1,20 +1,17 @@
 import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-element'
 import { Person } from '../models/person.model'
 
-const connectWidth = 6
-// const connectColor = css`rgba(0,0,0, 0.4)`
-const connectColor = css`rgba(0,0,0, 0.4)`
-
 export class JrTree extends LitElement {
   @property( {type: Array}) data = []
-  @property({type: Number}) mainId = 32
+  @property({type: Number}) mainId = -1
 
   static get styles(): CSSResult {
     return css`
       .tree-container {
         display: flex;
         flex: 1;
-        margin: 16px 0;
+        margin-top: var(--one-space);
+        margin-bottom: var(--one-space);
       }
       .tree, .ancestors, .progeny {
         display: flex;
@@ -28,45 +25,54 @@ export class JrTree extends LitElement {
         justify-content: flex-end;
       }
       .connect {
-        background-color: ${connectColor};
-        opacity: 0.5;
+        background-color: var(--connect-color);
       }
       .vertical {
-        width: ${connectWidth}px;
-        height: 16px;
+        width: var(--connect-width);
+        height: var(--one-space);
       }
       .horizontal {
-        height: ${connectWidth}px;
+        height: var(--connect-width);
       }
       .ancestors .horizontal {
         width: 50%;
       }
-      .ancestors .horizontal.left {
-        margin: 0 ${connectWidth / 2}px 0  50%;
-        padding-left: ${connectWidth / 2}px;
+      .horizontal.left {
+        margin-right: var(--connect-width-half);
+        margin-left: 50%;
+        padding-left: var(--connect-width-half);
       }
       .ancestors .horizontal.right {
-        margin: 0 50% 0 ${connectWidth / 2}px;
-        padding-left: ${connectWidth / 2}px;
+        margin-right: 50%;
+        margin-left: var(--connect-width-half);
+        padding-left: var(--connect-width-half);
       }
       .progeny .horizontal {
         width: 100%;
       }
       .progeny .horizontal.first  {
-        margin: 0 ${connectWidth / 2}px 0 50%;
-        padding-left: ${connectWidth / 2}px;
+        margin-right: var(--connect-width-half);
+        margin-left: 50%;
+        padding-left: var(--connect-width-half);;
         width: 50%;
       }
       .progeny .horizontal.last  {
-        margin: 0 50% 0 ${connectWidth / 2}px;
-        padding-right: ${connectWidth / 2}px;
+        margin-right: 50%;
+        margin-left: var(--connect-width-half);
+        padding-right: var(--connect-width-half);;
         width: 50%;
-      }      
+      }
+      .progeny .horizontal.single {
+        display: none;
+      }  
     `;
   }
 
   static mainPersonTemplate(data: Person[], id: number): TemplateResult {
     const person = data.find(p => p.id === id) as Person
+    if (!person) {
+      return html`<p>Persoon bestaat niet</p>`
+    }
     const hasProgeny = data.find(p => p.fatherId === id || p.motherId === id)
     const ancestorsVerticalConnect = html`<div class="ancestor vertical connect"></div>`
     return html`
@@ -118,7 +124,7 @@ export class JrTree extends LitElement {
     const progenyTemplateResult = data.filter(p => p.fatherId === person.id || p.motherId === person.id)
     .sort((p1: Person, p2: Person) => +p1.dateOfBirth.substring(0, 4) - +p2.dateOfBirth.substring(0, 4))
     .map((p, index, pArray) =>  {
-      const position = index === 0 ? 'first' : (index === pArray.length - 1 ? 'last' : '') 
+      const position = pArray.length === 1 ? 'single' : (index === 0 ? 'first' : (index === pArray.length - 1 ? 'last' : ''))
       return JrTree.progenyTemplate(data, p, mainId, position)
     })
     const progeny = person.id === mainId ?
@@ -133,18 +139,6 @@ export class JrTree extends LitElement {
         </div>
       `
     return progeny
-  }
-
-
-  constructor() {
-    super()
-    fetch('/src/assets/data.json')
-      .then((data) => {
-        return data.json()
-      })
-      .then(data => {
-        this.data = data
-      })
   }
 
   render(): TemplateResult {
