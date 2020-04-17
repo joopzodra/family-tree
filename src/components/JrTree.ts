@@ -2,8 +2,8 @@ import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-
 import { Person } from '../models/person.model'
 
 export class JrTree extends LitElement {
-  @property( {type: Array}) data = []
-  @property({type: Number}) mainId = -1
+  @property({ type: Array }) data = []
+  @property({ type: Number }) mainId = -1
 
   static get styles(): CSSResult {
     return css`
@@ -122,11 +122,11 @@ export class JrTree extends LitElement {
 
   static progenyTemplate(data: Person[], person: Person, mainId: number, position: string): TemplateResult {
     const progenyTemplateResult = data.filter(p => p.fatherId === person.id || p.motherId === person.id)
-    .sort((p1: Person, p2: Person) => +p1.dateOfBirth.substring(0, 4) - +p2.dateOfBirth.substring(0, 4))
-    .map((p, index, pArray) =>  {
-      const position = pArray.length === 1 ? 'single' : (index === 0 ? 'first' : (index === pArray.length - 1 ? 'last' : ''))
-      return JrTree.progenyTemplate(data, p, mainId, position)
-    })
+      .sort((p1: Person, p2: Person) => +p1.dateOfBirth.substring(0, 4) - +p2.dateOfBirth.substring(0, 4))
+      .map((p, index, pArray) => {
+        const position = pArray.length === 1 ? 'single' : (index === 0 ? 'first' : (index === pArray.length - 1 ? 'last' : ''))
+        return JrTree.progenyTemplate(data, p, mainId, position)
+      })
     const progeny = person.id === mainId ?
       html`${progenyTemplateResult}` :
       html`

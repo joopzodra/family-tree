@@ -15,7 +15,7 @@
     "baseUrl": "./",
     "experimentalDecorators": true,
     "importHelpers": true,
-    "outDir": "./out-tsc",
+    "outDir": "./out-tsc/src",
     "plugins": [
       {
         "name": "typescript-lit-html-plugin"

@@ -15,7 +15,6 @@ module.exports = {
   ignorePatterns: ['**/*.spec.*'],
   rules: {
     '@typescript-eslint/no-unsafe-member-access': 2,
-    '@typescript-eslint/array-type': 2,
     '@typescript-eslint/unbound-method': 0,
   },
 };

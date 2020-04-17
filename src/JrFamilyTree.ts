@@ -4,14 +4,14 @@ import page from 'page';
 
 export class JrFamilyTree extends LitElement {
 
-  @property({type: Array}) data = [];
-  @property({type: Number}) mainId = -1
-  @property({type: Number}) themeWidth = 6
-  @property({type: String}) themeColor = 'rgba(125,188,18,0.4'
+  @property({ type: Array }) data = [];
+  @property({ type: Number }) mainId = -1
+  @property({ type: Number }) themeWidth = 6
+  @property({ type: String }) themeColor = 'rgba(125,188,18,0.4'
 
   constructor() {
     super()
-    fetch('/src/assets/data.json')
+    fetch('/assets/data.json')
       .then((data) => {
         return data.json()
       })
@@ -22,14 +22,14 @@ export class JrFamilyTree extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    page.base('');
+    page.base('/family-tree');
     page('/', this.noPerson.bind(this))
     page('/:id', this.onNavigate.bind(this));
     page();
   }
 
   onNavigate(context: PageJS.Context): void {
-    const id = (context.params as {id: string}).id
+    const id = (context.params as { id: string }).id
     document.title = 'FT ' + id
     this.mainId = +id
   }
@@ -37,7 +37,7 @@ export class JrFamilyTree extends LitElement {
   noPerson(): void {
     this.mainId = -1
   }
-  
+
   render(): TemplateResult {
     if (this.mainId === -1) {
       return html`<p>Kies een persoon</p>`
