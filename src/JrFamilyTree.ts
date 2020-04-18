@@ -10,7 +10,7 @@ export class JrFamilyTree extends LitElement {
 
   constructor() {
     super();
-    fetch('/assets/data.json')
+    fetch('assets/data.json')
       .then(data => data.json())
       .then(data => {
         this.data = data;
@@ -46,15 +46,15 @@ export class JrFamilyTree extends LitElement {
         .mainId=${this.mainId}
         .data=${this.data}
         style=${styleMap({
-          '--person-border-color': `${this.themeColor}`,
-          '--person-border-width': `${this.themeWidth}px`,
-          '--person-border-style': 'solid',
-          '--connect-color': `${this.themeColor}`,
-          '--connect-width': `${this.themeWidth}px`,
-          '--connect-width-half': `${this.themeWidth / 2}px`,
-          '--one-space': '16px',
-          '--three-quarter-space': '12px',
-        })}
+      '--person-border-color': `${this.themeColor}`,
+      '--person-border-width': `${this.themeWidth}px`,
+      '--person-border-style': 'solid',
+      '--connect-color': `${this.themeColor}`,
+      '--connect-width': `${this.themeWidth}px`,
+      '--connect-width-half': `${this.themeWidth / 2}px`,
+      '--one-space': '16px',
+      '--three-quarter-space': '12px',
+    })}
       ></jr-tree>
     `;
   }
