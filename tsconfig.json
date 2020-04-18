@@ -3,11 +3,11 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",    
-      "lib": [
-        "es2018",
-        "dom"
-      ],
+    "moduleResolution": "node",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
@@ -23,6 +23,12 @@
     ],
     "sourceMap": true
   },
-  "include": ["node_modules/@open-wc/**/*.js", "src/**/*.ts", "rollup.config.js"],
-  "exclude": ["node_modules/!(@open-wc)"]  
+  "include": [
+    "node_modules/@open-wc/**/*.js",
+    "src/**/*.ts",
+    "rollup.config.js"
+  ],
+  "exclude": [
+    "node_modules/!(@open-wc)"
+  ]
 }

@@ -8,7 +8,7 @@ export interface Person {
   dateOfDeath: string;
   placeOfDeath: string;
   fatherId: number | null;
-  motherId: number | null ;
+  motherId: number | null;
   marriedWith: number[];
   datesOfMarriages: string[];
   placesOfMarriages: string[];

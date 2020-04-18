@@ -3,10 +3,10 @@
     "compile": "rimraf out-tsc && npx tsc --p tsconfig.build.json",
     "create-index": "npx shx rm -f out-tsc/index.html && npx shx sed 's/\\.ts/\\.js/g' index.html > out-tsc/index.html",
     "copy-to-build": "npx shx cp docs/index.html docs/404.html && npx shx cp -r assets docs/",
-    "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
-    "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
-    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "lint:eslint": "eslint -c .eslintrc-precommit.js --ext .ts --ignore-path .gitignore src/",
+    "format:eslint": "eslint -c .eslintrc-precommit.js --ext .ts --fix --ignore-path .gitignore src/",
+    "lint:prettier": "prettier \"src/**/*.ts\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"src/**/*.ts\" --write --no-semi --ignore-path .gitignore",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "format": "npm run format:eslint && npm run format:prettier",
     "start:build": "es-dev-server --root-dir docs --base-path /family-tree --app-index index.html --compatibility none",
@@ -25,7 +25,8 @@
     "@typescript-eslint/parser": "^2.25.0",
     "es-dev-server": "^1.5.0",
     "eslint": "^6.1.0",
-    "eslint-config-airbnb-typescript": "^7.2.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
     "husky": "^1.0.0",
     "lint-staged": "^8.0.0",
     "rimraf": "^2.6.3",
@@ -49,7 +50,6 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "prettier --write",
       "git add"
     ]
   },
