@@ -1,15 +1,17 @@
 import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-element';
 import { Person } from '../models/person.model';
+import { tripleBaseSpace } from '../JrFamilyTree';
 
 export class JrTree extends LitElement {
   @property({ type: Array }) data = [];
   @property({ type: Number }) mainId = -1;
+  treeContainer: HTMLElement | null = null;
+  siblingsContainer: HTMLElement | null = null;
+  mainPerson: HTMLElement | null = null;
 
   static get styles(): CSSResult {
     return css`
       .tree-container {
-        display: flex;
-        flex: 1;
         margin-top: var(--one-space);
         margin-bottom: var(--one-space);
       }
@@ -68,6 +70,27 @@ export class JrTree extends LitElement {
       .progeny .horizontal.single {
         display: none;
       }
+      .main-person-container {
+        display: flex;
+        justify-content: center;
+        position: relative;
+      }
+      .siblings-container {
+        position: absolute;
+        right: var(--main-person-width);
+        margin-right: var(--triple-space);
+      }
+      .spouses-container {
+        position: absolute;
+        left: var(--main-person-width);
+        margin-left: var(--triple-space);
+      }
+      jr-main-person {
+      }
+      .siblings,
+      .spouses {
+        display: flex;
+      }
     `;
   }
 
@@ -87,7 +110,15 @@ export class JrTree extends LitElement {
         <div class="tree">
           <div class="ancestors-container">${JrTree.ancestors(data, person)}</div>
           ${person.fatherId || person.motherId ? ancestorsVerticalConnect : html``}
-          <jr-main-person .person="${person}"></jr-main-person>
+          <div class="main-person-container">
+            <div class="siblings-container">
+              ${JrTree.siblingsTemplate(data, person)}
+            </div>
+            <jr-main-person .person="${person}"></jr-main-person>
+            <div class="spouses-container">
+              ${JrTree.spousesTemplate(data, person)}
+            </div>
+          </div>
           ${hasProgeny
             ? html`
                 <div class="progeny vertical connect"></div>
@@ -187,7 +218,65 @@ export class JrTree extends LitElement {
     return progeny;
   }
 
+  static spousesTemplate(data: Person[], person: Person): TemplateResult {
+    const spouses: number[] = JSON.parse(person.marriedWith);
+    spouses.map((spouse: number) => {
+      const spousePerson = data.find(p => p.id === spouse);
+      return html`
+        <jr-person .person="${spousePerson}"></jr-person>
+      `;
+    });
+    return html`
+      <div class="spouses">${spouses}</div>
+    `;
+  }
+
+  static siblingsTemplate(data: Person[], person: Person): TemplateResult {
+    const siblings = data
+      .filter(
+        p =>
+          (p.motherId && p.motherId === person.motherId) ||
+          (p.fatherId && p.fatherId === person.fatherId),
+      )
+      .map(
+        sibling =>
+          html`
+            <jr-person .person="${sibling}"></jr-person>
+          `,
+      );
+    return html`
+      <div class="siblings">${siblings}</div>
+    `;
+  }
+
+  setElementRefs(): void {
+    const shadow = this.shadowRoot;
+    if (shadow) {
+      this.treeContainer = shadow.querySelector<HTMLElement>('.tree-container');
+      this.siblingsContainer = shadow.querySelector<HTMLElement>('.siblings-container');
+      this.mainPerson = shadow.querySelector<HTMLElement>('jr-main-person');
+    }
+  }
+
   render(): TemplateResult {
+    this.updateComplete.then((): void => {
+      let siblingsWidth = 0;
+      if (!this.siblingsContainer) {
+        this.setElementRefs();
+      }
+      if (this.siblingsContainer) {
+        siblingsWidth = this.siblingsContainer.offsetWidth + tripleBaseSpace * 2;
+      }
+      if (this.treeContainer) {
+        if (siblingsWidth > +this.treeContainer.style.width / 2) {
+          const currentWidth = this.treeContainer.offsetWidth;
+          this.treeContainer.style.marginLeft = `${siblingsWidth -
+            this.treeContainer.offsetWidth / 2}px`;
+          this.treeContainer.style.width = `${currentWidth}px`;
+        }
+      }
+    });
+
     return html`
       <h1>Stamboom</h1>
       ${JrTree.mainPersonTemplate(this.data, this.mainId)}

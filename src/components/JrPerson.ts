@@ -9,8 +9,8 @@ export class JrPerson extends LitElement {
       .person {
         display: flex;
         flex-flow: column;
-        height: 100px;
-        width: 100px;
+        height: var(--person-height);
+        width: var(--person-width);
         border-style: var(--person-border-style);
         border-width: var(--person-border-width);
         border-color: var(--person-border-color);

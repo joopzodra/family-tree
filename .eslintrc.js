@@ -47,7 +47,6 @@ module.exports = {
     'import/no-named-as-default': 'off',
     'import/no-cycle': 'off',
     'import/no-unused-modules': 'off',
-    'import/no-deprecated': 'off',
-    'prettier/prettier': 'error'
+    'import/no-deprecated': 'off'
   },
 };

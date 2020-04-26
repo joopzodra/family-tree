@@ -9,7 +9,7 @@ export interface Person {
   placeOfDeath: string;
   fatherId: number | null;
   motherId: number | null;
-  marriedWith: number[];
+  marriedWith: string;
   datesOfMarriages: string[];
   placesOfMarriages: string[];
   datesOfDivorces: string[];

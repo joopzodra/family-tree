@@ -3,12 +3,9 @@
     "compile": "rimraf out-tsc && npx tsc --p tsconfig.build.json",
     "create-index": "npx shx rm -f out-tsc/index.html && npx shx sed 's/\\.ts/\\.js/g' index.html > out-tsc/index.html",
     "copy-to-build": "npx shx cp docs/index.html docs/404.html && npx shx cp -r assets docs/",
-    "lint:eslint": "eslint -c .eslintrc-precommit.js --ext .ts --ignore-path .gitignore src/",
-    "format:eslint": "eslint -c .eslintrc-precommit.js --ext .ts --fix --ignore-path .gitignore src/",
-    "lint:prettier": "prettier \"src/**/*.ts\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"src/**/*.ts\" --write --no-semi --ignore-path .gitignore",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "format": "npm run format:eslint && npm run format:prettier",
+    "lint": "eslint --ext .ts --ignore-path .gitignore src/",
+    "format": "eslint --ext .ts --fix --ignore-path .gitignore src/",
+    "format-precommit": "eslint -c .eslintrc-precommit.js --ext .ts --fix --ignore-path .gitignore src/",
     "start:build": "es-dev-server --root-dir docs --base-path /family-tree --app-index index.html --compatibility none",
     "build": "npm run compile && npm run create-index && rimraf docs && rollup -c rollup.config.js && npm run copy-to-build",
     "start": "es-dev-server --app-index index.html --base-path /family-tree --node-resolve --watch --file-extensions .ts --babel"
@@ -35,12 +32,6 @@
     "shx": "^0.3.2",
     "typescript": "^3.8.3"
   },
-  "eslintConfig": {
-    "extends": [
-      "@open-wc/eslint-config",
-      "eslint-config-prettier"
-    ]
-  },
   "prettier": "@open-wc/prettier-config",
   "husky": {
     "hooks": {
@@ -48,8 +39,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
+    "*.ts": [
+      "npm run format-precommit",
       "git add"
     ]
   },
