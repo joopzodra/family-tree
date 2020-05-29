@@ -269,6 +269,7 @@ export class JrTree extends LitElement {
       }
       if (this.treeContainer) {
         if (siblingsWidth > +this.treeContainer.style.width / 2) {
+          // without resetting width, width becomes 0 somehow due to the margin
           const currentWidth = this.treeContainer.offsetWidth;
           this.treeContainer.style.marginLeft = `${siblingsWidth -
             this.treeContainer.offsetWidth / 2}px`;
