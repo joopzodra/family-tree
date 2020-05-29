@@ -219,8 +219,8 @@ export class JrTree extends LitElement {
   }
 
   static spousesTemplate(data: Person[], person: Person): TemplateResult {
-    const spouses: number[] = JSON.parse(person.marriedWith);
-    spouses.map((spouse: number) => {
+    const spousesIds: number[] = JSON.parse(person.marriedWith);
+    const spouses = spousesIds.map((spouse: number) => {
       const spousePerson = data.find(p => p.id === spouse);
       return html`
         <jr-person .person="${spousePerson}"></jr-person>
