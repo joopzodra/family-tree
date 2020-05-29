@@ -14,6 +14,7 @@ export class JrTree extends LitElement {
       .tree-container {
         margin-top: var(--one-space);
         margin-bottom: var(--one-space);
+        display: inline-flex;
       }
       .tree,
       .ancestors,
@@ -268,7 +269,7 @@ export class JrTree extends LitElement {
         siblingsWidth = this.siblingsContainer.offsetWidth + tripleBaseSpace * 2;
       }
       if (this.treeContainer) {
-        if (siblingsWidth > +this.treeContainer.style.width / 2) {
+        if (siblingsWidth > this.treeContainer.offsetWidth / 2) {
           // without resetting width, width becomes 0 somehow due to the margin
           const currentWidth = this.treeContainer.offsetWidth;
           this.treeContainer.style.marginLeft = `${siblingsWidth -
