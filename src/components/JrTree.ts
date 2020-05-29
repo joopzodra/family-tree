@@ -260,24 +260,27 @@ export class JrTree extends LitElement {
   }
 
   render(): TemplateResult {
-    this.updateComplete.then((): void => {
-      let siblingsWidth = 0;
-      if (!this.siblingsContainer) {
-        this.setElementRefs();
-      }
-      if (this.siblingsContainer) {
-        siblingsWidth = this.siblingsContainer.offsetWidth + tripleBaseSpace * 2;
-      }
-      if (this.treeContainer) {
-        if (siblingsWidth > this.treeContainer.offsetWidth / 2) {
-          // without resetting width, width becomes 0 somehow due to the margin
-          const currentWidth = this.treeContainer.offsetWidth;
-          this.treeContainer.style.marginLeft = `${siblingsWidth -
-            this.treeContainer.offsetWidth / 2}px`;
-          this.treeContainer.style.width = `${currentWidth}px`;
+    this.updateComplete.then(() =>
+      // Need timeout because Safari update is not completed yet
+      setTimeout((): void => {
+        let siblingsWidth = 0;
+        if (!this.siblingsContainer) {
+          this.setElementRefs();
         }
-      }
-    });
+        if (this.siblingsContainer) {
+          siblingsWidth = this.siblingsContainer.offsetWidth + tripleBaseSpace * 2;
+        }
+        if (this.treeContainer) {
+          if (siblingsWidth > this.treeContainer.offsetWidth / 2) {
+            // without resetting width, width becomes 0 somehow due to the margin
+            const currentWidth = this.treeContainer.offsetWidth;
+            this.treeContainer.style.marginLeft = `${siblingsWidth -
+              this.treeContainer.offsetWidth / 2}px`;
+            this.treeContainer.style.width = `${currentWidth}px`;
+          }
+        }
+      }, 0),
+    );
 
     return html`
       <h1>Stamboom</h1>
