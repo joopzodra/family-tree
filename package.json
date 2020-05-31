@@ -2,7 +2,7 @@
   "scripts": {
     "compile": "rimraf out-tsc && npx tsc --p tsconfig.build.json",
     "create-index": "npx shx rm -f out-tsc/index.html && npx shx sed 's/\\.ts/\\.js/g' index.html > out-tsc/index.html",
-    "copy-to-build": "npx shx cp docs/index.html docs/404.html && npx shx cp -r assets docs/",
+    "copy-to-build": "npx shx cp docs/index.html docs/404.html && npx shx cp -r assets docs/ && npx shx cp styles.css docs/",
     "lint": "eslint --ext .ts --ignore-path .gitignore src/",
     "format": "eslint --ext .ts --fix --ignore-path .gitignore src/",
     "format-precommit": "eslint -c .eslintrc-precommit.js --ext .ts --fix --ignore-path .gitignore src/",

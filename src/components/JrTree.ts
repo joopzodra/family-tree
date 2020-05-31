@@ -41,16 +41,19 @@ export class JrTree extends LitElement {
     `;
   }
 
-  static ancestors(data: Person[], person: Person): TemplateResult {
+  static ancestors(data: Person[], person: Person, index = 0): TemplateResult {
     let father;
     let mother;
+    let indexUpdate = index;
     if (person.fatherId) {
+      indexUpdate += 1;
       const fatherData = data.find(p => p.id === person.fatherId) as Person;
-      father = JrTree.ancestorsTemplate(data, fatherData, 'left');
+      father = JrTree.ancestorsTemplate(data, fatherData, 'left', indexUpdate);
     }
     if (person.motherId) {
+      indexUpdate += 1;
       const motherData = data.find(p => p.id === person.motherId) as Person;
-      mother = JrTree.ancestorsTemplate(data, motherData, 'right');
+      mother = JrTree.ancestorsTemplate(data, motherData, 'right', indexUpdate);
     }
     // TODO placeholder voor als persoon alleen vader of alleen moeder heeft
     // mother = !mother && father ? html`<div>ONBEKEND</div>` : mother
@@ -64,8 +67,9 @@ export class JrTree extends LitElement {
     data: Person[],
     person: Person,
     leftOrRight: 'left' | 'right',
+    index: number,
   ): TemplateResult {
-    const ancestorTemplateResult = JrTree.ancestors(data, person);
+    const ancestorTemplateResult = JrTree.ancestors(data, person, index);
     const ancestorVerticalConnectTop = ancestorTemplateResult.values.includes(undefined)
       ? html``
       : html`
@@ -73,11 +77,26 @@ export class JrTree extends LitElement {
         `;
     return html`
       <div class="ancestors">
-        <div class="ancestors-container">${ancestorTemplateResult}</div>
-        ${ancestorVerticalConnectTop}
-        <jr-person .person=${person}></jr-person>
-        <div class="connect vertical"></div>
-        <div class="connect horizontal ${leftOrRight}"></div>
+        <div class="accordion">
+          <div class="card">
+            <div id=${`ancestors-container-${index}`} class="ancestors-container collapse">
+              ${ancestorTemplateResult}
+            </div>
+            <button
+              class="btn btn-link btn-block text-center collapsed"
+              type="button"
+              data-toggle="collapse"
+              data-target="${`#ancestors-container-${index}`}"
+            ><span class="open-collapse-sign">+</span>
+              <span class="close-collapse-sign">-</span>
+            </button>
+          </div>
+        </div>
+          ${ancestorVerticalConnectTop}
+          <jr-person .person=${person}></jr-person>
+          <div class="connect vertical"></div>
+          <div class="connect horizontal ${leftOrRight}"></div>
+        </div>
       </div>
     `;
   }
