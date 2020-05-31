@@ -1,6 +1,5 @@
-import { LitElement, html, css, property, TemplateResult, CSSResult } from 'lit-element';
+import { LitElement, html, property, TemplateResult } from 'lit-element';
 import { Person } from '../models/person.model';
-import { tripleBaseSpace } from '../JrFamilyTree';
 
 export class JrTree extends LitElement {
   @property({ type: Array }) data = [];
@@ -8,92 +7,6 @@ export class JrTree extends LitElement {
   treeContainer: HTMLElement | null = null;
   siblingsContainer: HTMLElement | null = null;
   mainPerson: HTMLElement | null = null;
-
-  static get styles(): CSSResult {
-    return css`
-      .tree-container {
-        margin-top: var(--one-space);
-        margin-bottom: var(--one-space);
-        display: inline-flex;
-      }
-      .tree,
-      .ancestors,
-      .progeny {
-        display: flex;
-        flex-flow: column;
-        align-items: center;
-      }
-      .ancestors-container,
-      .progeny-container {
-        display: flex;
-      }
-      .ancestors {
-        justify-content: flex-end;
-      }
-      .connect {
-        background-color: var(--connect-color);
-      }
-      .vertical {
-        width: var(--connect-width);
-        height: var(--one-space);
-      }
-      .horizontal {
-        height: var(--connect-width);
-      }
-      .ancestors .horizontal {
-        width: 50%;
-      }
-      .horizontal.left {
-        margin-right: var(--connect-width-half);
-        margin-left: 50%;
-        padding-left: var(--connect-width-half);
-      }
-      .ancestors .horizontal.right {
-        margin-right: 50%;
-        margin-left: var(--connect-width-half);
-        padding-left: var(--connect-width-half);
-      }
-      .progeny .horizontal {
-        width: 100%;
-      }
-      .progeny .horizontal.first {
-        margin-right: var(--connect-width-half);
-        margin-left: 50%;
-        padding-left: var(--connect-width-half);
-        width: 50%;
-      }
-      .progeny .horizontal.last {
-        margin-right: 50%;
-        margin-left: var(--connect-width-half);
-        padding-right: var(--connect-width-half);
-        width: 50%;
-      }
-      .progeny .horizontal.single {
-        display: none;
-      }
-      .main-person-container {
-        display: flex;
-        justify-content: center;
-        position: relative;
-      }
-      .siblings-container {
-        position: absolute;
-        right: var(--main-person-width);
-        margin-right: var(--triple-space);
-      }
-      .spouses-container {
-        position: absolute;
-        left: var(--main-person-width);
-        margin-left: var(--triple-space);
-      }
-      jr-main-person {
-      }
-      .siblings,
-      .spouses {
-        display: flex;
-      }
-    `;
-  }
 
   static mainPersonTemplate(data: Person[], id: number): TemplateResult {
     const person = data.find(p => p.id === id) as Person;
@@ -112,9 +25,6 @@ export class JrTree extends LitElement {
           <div class="ancestors-container">${JrTree.ancestors(data, person)}</div>
           ${person.fatherId || person.motherId ? ancestorsVerticalConnect : html``}
           <div class="main-person-container">
-            <div class="siblings-container">
-              ${JrTree.siblingsTemplate(data, person)}
-            </div>
             <jr-main-person .person="${person}"></jr-main-person>
             <div class="spouses-container">
               ${JrTree.spousesTemplate(data, person)}
@@ -232,24 +142,6 @@ export class JrTree extends LitElement {
     `;
   }
 
-  static siblingsTemplate(data: Person[], person: Person): TemplateResult {
-    const siblings = data
-      .filter(
-        p =>
-          (p.motherId && p.motherId === person.motherId) ||
-          (p.fatherId && p.fatherId === person.fatherId),
-      )
-      .map(
-        sibling =>
-          html`
-            <jr-person .person="${sibling}"></jr-person>
-          `,
-      );
-    return html`
-      <div class="siblings">${siblings}</div>
-    `;
-  }
-
   setElementRefs(): void {
     const shadow = this.shadowRoot;
     if (shadow) {
@@ -260,31 +152,13 @@ export class JrTree extends LitElement {
   }
 
   render(): TemplateResult {
-    this.updateComplete.then(() =>
-      // Need timeout because Safari update is not completed yet
-      setTimeout((): void => {
-        let siblingsWidth = 0;
-        if (!this.siblingsContainer) {
-          this.setElementRefs();
-        }
-        if (this.siblingsContainer) {
-          siblingsWidth = this.siblingsContainer.offsetWidth + tripleBaseSpace * 2;
-        }
-        if (this.treeContainer) {
-          if (siblingsWidth > this.treeContainer.offsetWidth / 2) {
-            // without resetting width, width becomes 0 somehow due to the margin
-            const currentWidth = this.treeContainer.offsetWidth;
-            this.treeContainer.style.marginLeft = `${siblingsWidth -
-              this.treeContainer.offsetWidth / 2}px`;
-            this.treeContainer.style.width = `${currentWidth}px`;
-          }
-        }
-      }, 0),
-    );
-
     return html`
       <h1>Stamboom</h1>
       ${JrTree.mainPersonTemplate(this.data, this.mainId)}
     `;
+  }
+
+  createRenderRoot(): JrTree {
+    return this;
   }
 }

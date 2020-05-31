@@ -1,0 +1,125 @@
+:root {
+  --theme-color: rgba(125,188,18,0.4);
+  --theme-width: 6px;
+  --theme-half-width: 3px;
+
+  --one-space: 16px;
+  --triple-space: 48px;
+  --three-quarter-space: 12px;
+
+  --person-border-color: var(--theme-color);
+  --person-border-width: var(--theme-width);
+  --person-border-style: solid;
+  --person-width: 100px;
+  --person-height: 100px;
+
+  --main-person-width: 125px;
+  --main-person-height: 125px;
+
+  --connect-color: var(--theme-color);
+  --connect-width: var(--theme-width);
+  --connect-width-half: var(--theme-half-width);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(241, 235, 213);
+}
+.tree-container {
+  margin-top: var(--one-space);
+  margin-bottom: var(--one-space);
+  display: inline-flex;
+}
+.tree,
+.ancestors,
+.progeny {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+.ancestors-container,
+.progeny-container {
+  display: flex;
+}
+.ancestors {
+  justify-content: flex-end;
+}
+.connect {
+  background-color: var(--connect-color);
+  box-sizing: initial;
+}
+.vertical {
+  width: var(--connect-width);
+  height: var(--one-space);
+}
+.horizontal {
+  height: var(--connect-width);
+}
+.ancestors .horizontal {
+  width: 50%;
+}
+.horizontal.left {
+  margin-right: var(--connect-width-half);
+  margin-left: 50%;
+  padding-left: var(--connect-width-half);
+}
+.ancestors .horizontal.right {
+  margin-right: 50%;
+  margin-left: var(--connect-width-half);
+  padding-left: var(--connect-width-half);
+}
+.progeny .horizontal {
+  width: 100%;
+}
+.progeny .horizontal.first {
+  margin-right: var(--connect-width-half);
+  margin-left: 50%;
+  padding-left: var(--connect-width-half);
+  width: 50%;
+}
+.progeny .horizontal.last {
+  margin-right: 50%;
+  margin-left: var(--connect-width-half);
+  padding-right: var(--connect-width-half);
+  width: 50%;
+}
+.progeny .horizontal.single {
+  display: none;
+}
+.main-person-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.spouses-container {
+  position: absolute;
+  left: var(--main-person-width);
+  margin-left: var(--triple-space);
+}
+.spouses {
+  display: flex;
+}
+.person {
+  display: flex;
+  flex-flow: column;
+  height: var(--person-height);
+  width: var(--person-width);
+  border-style: var(--person-border-style);
+  border-width: var(--person-border-width);
+  border-color: var(--person-border-color);
+  margin-left: var(--one-space);
+  margin-right: var(--one-space);
+}
+.person.main {
+  display: flex;
+  flex-flow: column;
+  height: var(--main-person-height);
+  width: var(--main-person-width);
+  border-style: var(--person-border-style);
+  border-color: var(--person-border-color);
+  border-width: var(--three-quarter-space);
+  margin-left: var(--one-space);
+  margin-right: var(--one-space);
+}
